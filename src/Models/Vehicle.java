@@ -1,4 +1,4 @@
 package Models;
 
-sealed interface Vehicle permits Car, Motorcycle {
+sealed public interface Vehicle permits Car, Motorcycle {
 }
