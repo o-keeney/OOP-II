@@ -41,9 +41,9 @@ public class CarParkManagement
             switch (choice)
             {
                 case 1 -> addVehicle(scanner);
-                //case 2 -> listVehicles();
-                //case 3 -> findVehicle();
-                //case 4 -> removeVehicle();
+                case 2 -> listVehicles();
+                case 3 -> findVehicle(scanner);
+                case 4 -> removeVehicle(scanner);
                 //case 5 -> analyseParkingLot();
                 //case 6 -> exportData();
                 case 7 ->
@@ -78,4 +78,46 @@ public class CarParkManagement
         System.out.println("Vehicle added successfully.");
     }
 
+    private static void listVehicles()
+    {
+        parkingLot.stream().forEach(System.out::println);
+    }
+
+    private static void findVehicle(Scanner scanner)
+    {
+        System.out.print("Enter registration number: ");
+        String registration = scanner.nextLine();
+
+        parkingLot.stream()
+                .filter(v -> v instanceof Car car
+                        && car.registration().equalsIgnoreCase(registration)
+                        || v instanceof Motorcycle motorcycle
+                        && motorcycle.registration().equalsIgnoreCase(registration)
+                ).findFirst()
+                .ifPresentOrElse(System.out::println, () -> System.out.println("Vehicle not found"));
+
+    }
+
+    private static void removeVehicle(Scanner scanner)
+    {
+        System.out.print("Enter registration number to remove: ");
+        String registration = scanner.nextLine();
+
+        boolean removed = parkingLot.removeIf(vehicle -> vehicle instanceof Car car
+                && car.registration().equalsIgnoreCase(registration)
+                || vehicle instanceof Motorcycle motorcycle
+                && motorcycle.registration().equalsIgnoreCase(registration)
+        );
+
+        if (removed)
+        {
+            System.out.println("Vehicle removed successfully");
+        }
+        else
+        {
+            System.out.println("Vehicle not found.");
+        }
+    }
+
+    
 }
